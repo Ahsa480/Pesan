@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sebuah Pesan Untukmu...</title>
+    
+    <!-- Memuat Tailwind CSS untuk styling yang modern dan responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Memuat Font dari Google Fonts untuk tampilan yang lebih romantis -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Memuat library untuk efek confetti yang meriah -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.js"></script>
+
+    <style>
+        /* Menetapkan font custom */
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden; /* Mencegah scroll bar yang tidak perlu */
+        }
+        .font-pacifico {
+            font-family: 'Pacifico', cursive;
+        }
+
+        /* Animasi untuk elemen yang muncul */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        /* Styling untuk hati yang berjatuhan */
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            color: red;
+            animation: fall 5s linear infinite;
+            user-select: none;
+        }
+
+        /* Animasi hati berjatuhan */
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Tombol "Tidak" yang akan kita gerakkan dengan JavaScript */
+        #no-btn {
+            position: absolute;
+            transition: all 0.3s ease;
+        }
+
+        /* Animasi loading spinner */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ef4444; /* red-500 */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-400 via-red-500 to-yellow-500 flex items-center justify-center min-h-screen">
+
+    <!-- Container Utama -->
+    <div id="container" class="w-full h-full">
+
+        <!-- Tahap 1: Layar Pembuka -->
+        <div id="initial-screen" class="w-full h-screen flex items-center justify-center">
+            <div class="bg-white/30 backdrop-blur-xl p-8 md:p-12 rounded-2xl shadow-2xl text-center text-white max-w-lg mx-4">
+                <!-- NAMA DIA SUDAH DIGANTI -->
+                <h1 class="text-3xl md:text-4xl font-bold mb-4">Hai, Sisna!</h1>
+                <p class="text-lg md:text-xl mb-8">Aku punya sesuatu yang spesial untukmu...</p>
+                <button id="open-btn" class="bg-white text-red-500 font-bold text-xl px-8 py-4 rounded-full shadow-lg transform transition-transform hover:scale-110 focus:outline-none">
+                    Buka Sekarang!
+                </button>
+            </div>
+        </div>
+
+        <!-- Tahap 2: Surat Cinta (Awalnya tersembunyi) -->
+        <div id="main-content" class="hidden relative w-full h-screen flex items-center justify-center">
+            
+            <!-- DEKORASI BUNGA -->
+            <img src="https://static.vecteezy.com/system/resources/previews/013/355/125/original/red-rose-flower-on-transparent-background-free-png.png" alt="[Gambar Bunga Mawar Merah]" class="absolute top-0 left-0 w-40 h-40 md:w-56 md:h-56 object-contain -translate-x-1/4 -translate-y-1/4 opacity-80 -rotate-45 pointer-events-none">
+            <img src="https://static.vecteezy.com/system/resources/previews/013/355/125/original/red-rose-flower-on-transparent-background-free-png.png" alt="[Gambar Bunga Mawar Merah]" class="absolute bottom-0 right-0 w-40 h-40 md:w-56 md:h-56 object-contain translate-x-1/4 translate-y-1/4 opacity-80 rotate-[135deg] pointer-events-none">
+
+            <div class="bg-white/30 backdrop-blur-xl p-6 md:p-10 rounded-2xl shadow-2xl text-center text-white max-w-2xl mx-4 transform transition-all duration-500 z-10">
+                <!-- GANTI URL FOTO DI SINI -->
+                <img src="https://placehold.co/400x400/FFFFFF/E91E63?text=Foto+Kalian+Berdua" alt="Foto Kalian" class="w-40 h-40 md:w-48 md:h-48 rounded-full mx-auto -mt-20 md:-mt-24 border-4 border-white shadow-xl object-cover">
+                
+                <!-- NAMA DIA SUDAH DIGANTI -->
+                <h2 class="font-pacifico text-4xl md:text-5xl text-white my-6" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Untukmu, Sisna❤️</h2>
+                <p class="text-base md:text-lg mb-8 px-4 leading-relaxed">
+                    Sejak pertama kali kita bertemu, ada sesuatu yang berbeda. Senyummu, caramu berbicara, semuanya membuat hariku lebih berwarna. Aku sadar, aku tidak ingin melewati satu hari pun tanpamu di sisiku.
+                </p>
+
+                <div class="bg-white/20 p-6 rounded-lg">
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Jadi, aku ingin bertanya...</h3>
+                    <p class="text-lg md:text-xl font-bold mb-6">Maukah kamu menjadi pacarku?</p>
+                    
+                    <div id="button-container" class="relative h-24 flex items-center justify-center gap-x-4">
+                        <button id="yes-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold text-xl px-12 py-4 rounded-full shadow-lg transform transition-transform hover:scale-110 z-10">
+                            Mau!
+                        </button>
+                        <button id="no-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold text-lg px-8 py-3 rounded-full shadow-lg">
+                            Tidak
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tahap 3: Layar Jawaban "IYA" (Awalnya tersembunyi) -->
+        <div id="success-screen" class="hidden w-full h-screen flex items-center justify-center">
+            <div class="bg-white/30 backdrop-blur-xl p-8 md:p-12 rounded-2xl shadow-2xl text-center text-white max-w-lg mx-4">
+                <h1 class="font-pacifico text-5xl md:text-6xl mb-4">Horeee!</h1>
+                <!-- NAMA DIA SUDAH DIGANTI -->
+                <p class="text-2xl md:text-3xl font-bold">Aku sayang kamu, Sisna❤️!</p>
+                <p class="text-lg mt-4">Mulai sekarang, kita akan memulai cerita kita bersama. ❤️</p>
+
+                <!-- FITUR GEMINI API BARU -->
+                <div id="gemini-feature" class="mt-8">
+                    <button id="gemini-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-lg px-6 py-3 rounded-full shadow-lg transform transition-transform hover:scale-105">
+                        ✨ Ciptakan Puisi Untuk Kita
+                    </button>
+                    <div id="loading-spinner" class="hidden mx-auto mt-4 loader"></div>
+                    <div id="poem-container" class="hidden mt-6 bg-white/20 p-4 rounded-lg text-left whitespace-pre-wrap">
+                        <!-- Puisi yang dihasilkan akan muncul di sini -->
+                    </div>
+                </div>
+                <!-- AKHIR FITUR GEMINI API -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- PENGATURAN DASAR ---
+        const initialScreen = document.getElementById('initial-screen');
+        const mainContent = document.getElementById('main-content');
+        const successScreen = document.getElementById('success-screen');
+        
+        const openBtn = document.getElementById('open-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        const noBtn = document.getElementById('no-btn');
+        const container = document.getElementById('container');
+
+        // --- PENGATURAN FITUR GEMINI ---
+        const geminiBtn = document.getElementById('gemini-btn');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const poemContainer = document.getElementById('poem-container');
+
+        // --- FUNGSI UNTUK MEMBUAT HATI ---
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            heart.innerText = '❤️';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+
+        // --- FUNGSI UNTUK CONFETTI ---
+        const confettiCannon = confetti.create(null, { resize: true, useWorker: true });
+        function fireConfetti() {
+            confettiCannon({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
+        }
+        function celebrate() {
+            const duration = 5 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+            const interval = setInterval(() => {
+                const timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                const particleCount = 50 * (timeLeft / duration);
+                confettiCannon(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confettiCannon(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        // --- EVENT LISTENER ---
+
+        // 1. Saat tombol "Buka Sekarang" diklik
+        openBtn.addEventListener('click', () => {
+            initialScreen.style.display = 'none';
+            mainContent.classList.remove('hidden');
+            mainContent.classList.add('fade-in');
+            setInterval(createHeart, 300);
+            fireConfetti();
+        });
+
+        // 2. Saat tombol "Mau!" diklik
+        yesBtn.addEventListener('click', () => {
+            mainContent.style.display = 'none';
+            successScreen.classList.remove('hidden');
+            successScreen.classList.add('fade-in');
+            celebrate();
+        });
+
+        // 3. Saat kursor mendekati tombol "Tidak"
+        noBtn.addEventListener('mouseover', () => {
+            const buttonContainer = document.getElementById('button-container');
+            const containerRect = buttonContainer.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+            let newTop = Math.random() * (containerRect.height - btnRect.height);
+            let newLeft = Math.random() * (containerRect.width - btnRect.width);
+            noBtn.style.top = newTop + 'px';
+            noBtn.style.left = newLeft + 'px';
+        });
+
+        // 4. Saat tombol "Ciptakan Puisi" diklik (FITUR BARU)
+        geminiBtn.addEventListener('click', async () => {
+            // Sembunyikan tombol dan tunjukkan loading
+            geminiBtn.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+            poemContainer.classList.add('hidden');
+
+            // Definisikan prompt untuk Gemini
+            // NAMA DIA SUDAH DIMASUKKAN KE DALAM PROMPT
+            const prompt = "Tuliskan sebuah puisi cinta yang singkat dan indah dalam Bahasa Indonesia untuk merayakan awal sebuah hubungan. Nama perempuannya adalah Sisna.";
+            
+            // Konfigurasi untuk memanggil Gemini API
+            const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Kunci API tidak diperlukan di lingkungan ini
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Ralat Rangkaian: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const poemText = result.candidates[0].content.parts[0].text;
+                    poemContainer.textContent = poemText;
+                } else {
+                    throw new Error("Struktur respons tidak dijangka atau kandungan tiada.");
+                }
+
+            } catch (error) {
+                console.error("Ralat semasa memanggil Gemini API:", error);
+                poemContainer.textContent = "Kamu gak tau aku siapa?. Coba cari tahu😝, Good bye Cantik🤭 aku sayang kamu😘";
+            } finally {
+                // Sembunyikan loading dan tunjukkan puisi
+                loadingSpinner.classList.add('hidden');
+                poemContainer.classList.remove('hidden');
+            }
+        });
+
+    </script>
+</body>
+</html>
